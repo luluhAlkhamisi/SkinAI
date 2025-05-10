@@ -184,7 +184,7 @@ if image_data is not None:
     img_resized2 = img.resize((300, 300))
     st.image( img_resized2  , use_column_width=False)
     st.markdown(f"""
-        <div style='background-color:#111111;padding:10px;border-radius:15px;text-align:center'>
+        <div style='background-color:#FFFFFF;padding:10px;border-radius:15px;text-align:center'>
             <h2 style='color:#FF4444;'>Disease: {predicted_class.upper()}</h2>
             <p style='font-size:25px; color: black;'>Confidence: {confidence:.2f}%</p>
 
