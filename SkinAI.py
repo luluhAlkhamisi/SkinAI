@@ -5,6 +5,8 @@ import cv2
 from PIL import Image
 import keras
 import gdown
+import os 
+import tempfile
 
 
 
@@ -19,19 +21,35 @@ class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 #     return keras.models.load_model("VGG19-96.keras")
 
 # model = load_model()
-@st.cache_resource
-import gdown
+file_id = "1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"
+tmp_model_path = None  # Initialize tmp_model_path outside the try block
 
-@st.cache_resource
-def load_model_from_drive(drive_url):
-    # Download file using gdown
-    output = tempfile.NamedTemporaryFile(delete=False, suffix=".keras").name
-    gdown.download(drive_url, output, quiet=False)
-    return keras.models.load_model(output)
+try:
+    # Create a temporary file path
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".keras") as tmp_file:
+        tmp_model_path = tmp_file.name
+        print(f"Temporary model file will be saved to: {tmp_model_path}")
 
-# Direct gdown link
-model_url = "https://drive.google.com/uc?id=1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"  # note: no 'export=download'
-model = load_model_from_drive(model_url)
+    # Download the model from Google Drive using gdown
+    print(f"Downloading model from Google Drive ID: {file_id} to c:/Users/emanm/OneDrive/Desktop/python/New folder/task2")
+    gdown.download(f"https://drive.google.com/uc?id={file_id}", tmp_model_path, quiet=False)
+    print("Download complete.")
+
+    # Load the model
+    print(f"Loading model from: {tmp_model_path}")
+    model = keras.models.load_model(tmp_model_path)
+    print("Model loaded successfully!")
+    st.success("VGG19 model loaded successfully!")
+
+except Exception as e:
+    st.error(f"An error occurred: {e}")
+finally:
+    # Clean up the temporary file
+    try:
+        os.remove(tmp_model_path)
+        print(f"Temporary file {tmp_model_path} removed.")
+    except OSError as e:
+        print(f"Error removing temporary file {tmp_model_path}: {e}")
 
 
 css = f"""
