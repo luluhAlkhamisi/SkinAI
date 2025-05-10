@@ -195,5 +195,4 @@ if image_data is not None:
         max-height: 300px;
         object-fit: contain;
     }
-    </style>
     """, unsafe_allow_html=True)
