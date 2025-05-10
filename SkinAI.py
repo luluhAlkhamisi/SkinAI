@@ -72,6 +72,9 @@ st.markdown("""
     .button-custom:hover {
         background-color: #0056b3;
     }
+     <div class="custom-box">
+        <div class="title">CHECK SKIN</div>
+    </div>
     </style>
 """, unsafe_allow_html=True)
 
