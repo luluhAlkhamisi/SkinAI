@@ -12,11 +12,28 @@ st.set_page_config(page_title="SkinAI", layout="wide")
 class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 
 # Load model once
-@st.cache(allow_output_mutation=True)
-def load_model():
-    return keras.models.load_model("VGG19-96.keras")
+# @st.cache(allow_output_mutation=True)
+# def load_model():
+#     return keras.models.load_model("VGG19-96.keras")
 
-model = load_model()
+# model = load_model()
+@st.cache(allow_output_mutation=True)
+def load_model_from_url(url):
+    response = requests.get(url)
+    print("hvjbkn",response.content)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".keras") as tmp_file:
+        tmp_file.write(response.content)
+        print("tmp file",tmp_file)
+        tmp_path = tmp_file.name
+        print("paaaaaaaaaaaaaaaath ", tmp_path)
+
+    model = keras.models.load_model(tmp_path)
+    return model
+
+
+model_url = "https://drive.google.com/uc?export=download&id=1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"
+model = load_model_from_url(model_url)
+
 
 css = f"""
     <style>
