@@ -72,10 +72,42 @@ st.markdown("""
     .button-custom:hover {
         background-color: #0056b3;
     }
-     <div class="custom-box">
+    
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        .custom-box {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .custom-box .title {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .custom-box button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .custom-box button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <div class="custom-box">
         <div class="title">CHECK SKIN</div>
     </div>
-    </style>
 """, unsafe_allow_html=True)
 
 # Title and subtitle
