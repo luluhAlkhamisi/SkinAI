@@ -182,9 +182,9 @@ if image_data is not None:
     # Show result screen
     st.image(Image.open(image_data), use_column_width=True)
     st.markdown(f"""
-        <div style='background-color:#FFFFFF;padding:20px;border-radius:15px;text-align:center'>
-            <h2 style='color:#000066;'>Disease: {predicted_class.upper()}</h2>
-            <p style='font-size:20px; color: black;'>Confidence: {confidence:.2f}%</p>
+        <div style='background-color:#FFFFFF;padding:25px;border-radius:20px;text-align:center'>
+            <h2 style='color:#FF4444;'>Disease: {predicted_class.upper()}</h2>
+            <p style='font-size:25px; color: black;'>Confidence: {confidence:.2f}%</p>
 
         </div>
     """, unsafe_allow_html=True)
