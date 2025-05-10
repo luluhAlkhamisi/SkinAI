@@ -11,7 +11,7 @@ import tempfile
 
 
 # Setup
-st.set_page_config(page_title="SkinAI", layout="wide"/n)
+st.set_page_config(page_title="SkinAI", layout="wide")
 # Class names
 class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 
