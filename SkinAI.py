@@ -17,7 +17,7 @@ class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 #     return keras.models.load_model("VGG19-96.keras")
 
 # model = load_model()
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_model_from_url(url):
     response = requests.get(url)
     print("hvjbkn",response.content)
