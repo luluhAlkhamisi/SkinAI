@@ -21,6 +21,8 @@ class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 #     return keras.models.load_model("VGG19-96.keras")
 
 # model = load_model()
+
+# load model from google drive
 file_id = "1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"
 tmp_model_path = None  # Initialize tmp_model_path outside the try block
 
@@ -137,7 +139,7 @@ st.markdown("""
             gap: 10px;
         }
         .custom-box .title {
-            font-size: 20px;
+            font-size: 25px;
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -180,7 +182,7 @@ if image_data is not None:
     # Show result screen
     st.image(Image.open(image_data), use_column_width=True)
     st.markdown(f"""
-        <div style='background-color:#FFFFFF;padding:20px;border-radius:15px;text-align:center'>
+        <div style='background-color:#000000;padding:20px;border-radius:15px;text-align:center'>
             <h2 style='color:#000066;'>Disease: {predicted_class.upper()}</h2>
             <p style='font-size:18px;'>Confidence: {confidence:.2f}%</p>
         </div>
