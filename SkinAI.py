@@ -9,111 +9,89 @@ import os
 import tempfile
 
 # Setup
-st.set_page_config(page_title="SkinAI", layout="wide")
+st.set_page_config(page_title="SkinAI", layout="centered")
 class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 
-# Load model from Google Drive
+# Load model
 file_id = "1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"
 tmp_model_path = None
 
 try:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".keras") as tmp_file:
         tmp_model_path = tmp_file.name
-    gdown.download(f"https://drive.google.com/uc?id={file_id}", tmp_model_path, quiet=False)
+        gdown.download(f"https://drive.google.com/uc?id={file_id}", tmp_model_path, quiet=False)
     model = keras.models.load_model(tmp_model_path)
-    st.success("VGG19 model loaded successfully!")
+    st.success("✅ VGG19 model loaded successfully!")
 except Exception as e:
-    st.error(f"An error occurred: {e}")
+    st.error(f"Error loading model: {e}")
 finally:
     try:
         os.remove(tmp_model_path)
-    except OSError as e:
-        print(f"Error removing temporary file: {e}")
+    except OSError:
+        pass
 
-# Custom CSS
-css = """
+# UI Styling
+st.markdown("""
     <style>
     .stApp {
         background-image: url("https://i0.wp.com/post.healthline.com/wp-content/uploads/2022/04/hand-foot-and-mouth-disease-body8.jpg?w=1155&h=1528");
         background-size: cover;
         background-position: center;
-        font-family: 'Arial', sans-serif;
+        font-family: 'Segoe UI', sans-serif;
     }
-    .custom-box {
-        background-color: #FFFFFF;
-        border-radius: 30px;
+    .centered-container {
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 40px;
-        max-width: 500px;
-        margin: auto;
-        box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+        border-radius: 25px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
         text-align: center;
+        max-width: 600px;
+        margin: 60px auto;
     }
     .title {
-        color: black;
         font-size: 36px;
         font-weight: 800;
-        margin-bottom: 20px;
+        color: #111;
     }
     .subtitle {
         font-size: 18px;
-        color: #0D0D1C;
+        color: #333;
     }
-    .custom-button {
-        background-color: white;
-        color: #0D0D1C;
-        border-radius: 20px;
-        padding: 10px 20px;
+    .button-custom {
+        display: inline-block;
+        padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
+        color: white;
+        background-color: #007bff;
         border: none;
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        cursor: pointer;
         margin-top: 10px;
-        width: 100%;
+    }
+    .button-custom:hover {
+        background-color: #0056b3;
     }
     </style>
-"""
-st.markdown(css, unsafe_allow_html=True)
-
-# Title and description
-st.markdown("""
-    <div style="position: absolute; top: -75px; left: -50px; color: white;">
-        <h1 style="color: black;"><strong>Skin<span style='color:#4F9CDA'>AI</span></strong></h1>
-        <p style="font-size:20px; color:black;">AI-POWERED CHILD<br>SKIN DISEASE DETECTION</p>
-    </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div class="custom-box">
-        <div class="title">CHECK SKIN</div>
-    </div>
-""", unsafe_allow_html=True)
+# Title and subtitle
+st.markdown("<div class='centered-container'>", unsafe_allow_html=True)
+st.markdown("<div class='title'>Skin<span style='color:#4F9CDA'>AI</span></div>", unsafe_allow_html=True)
+st.markdown("<p class='subtitle'>AI-Powered Child Skin Disease Detection</p>", unsafe_allow_html=True)
 
-# Camera control
-if "show_camera" not in st.session_state:
-    st.session_state.show_camera = False
+# Upload and camera
+option = st.radio("Choose input method:", ["📤 Upload Image", "📷 Take Picture"], horizontal=True)
 
-col1, col2 = st.columns([1, 1])
-
-with col1:
-    take_button = st.button("📷 Take Picture", key="take_picture")
-    st.markdown('<style>div.row-widget.stButton > button {width: 100%;}</style>', unsafe_allow_html=True)
-    if take_button:
-        st.session_state.show_camera = True
-
-with col2:
-    uploaded_file = st.file_uploader("Upload Picture", type=["jpg", "jpeg", "png"])
-
-# Show camera only after button click
 image_data = None
-if st.session_state.show_camera:
-    image_data = st.camera_input("")
+if option == "📤 Upload Image":
+    image_data = st.file_uploader("Upload a skin image", type=["jpg", "jpeg", "png"])
+elif option == "📷 Take Picture":
+    if st.button("Take Picture", key="take_picture", help="Click to activate your camera"):
+        image_data = st.camera_input("Capture Skin Area")
 
-# Use uploaded image if available
-if uploaded_file:
-    image_data = uploaded_file
-
-# Prediction and display
-if image_data is not None:
+# Process and Predict
+if image_data:
     img = Image.open(image_data).convert("RGB")
     img_resized = img.resize((224, 224))
     img_array = np.array(img_resized) / 255.0
@@ -123,11 +101,12 @@ if image_data is not None:
     predicted_class = class_names[np.argmax(predictions)]
     confidence = float(np.max(predictions)) * 100
 
-    img_display = img.resize((300, 300))
-    st.image(img_display, use_column_width=False)
+    st.image(img.resize((300, 300)), caption="Uploaded Image", use_column_width=False)
     st.markdown(f"""
-        <div style='background-color:#FFFFFF;padding:10px;border-radius:15px;text-align:center'>
+        <div style='background-color:#FFFFFF;padding:20px;border-radius:15px;text-align:center;margin-top:20px'>
             <h2 style='color:#FF4444;'>Disease: {predicted_class.upper()}</h2>
-            <p style='font-size:25px; color: black;'>Confidence: {confidence:.2f}%</p>
+            <p style='font-size:20px; color: black;'>Confidence: {confidence:.2f}%</p>
         </div>
     """, unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
