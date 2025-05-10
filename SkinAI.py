@@ -66,7 +66,7 @@ css = f"""
         background-color: #FFFFFF;
         border-radius: 30px;
         padding: 40px;
-        max-width: 500px;
+        max-width: 50px;
         margin: auto;
         box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
         text-align: center;
