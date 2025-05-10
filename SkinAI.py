@@ -49,18 +49,18 @@ st.markdown("""
         margin: 60px auto;
     }
     .title {
-        font-size: 36px;
+        font-size: 48px; /* Increased font size */
         font-weight: 800;
         color: #111;
     }
     .subtitle {
-        font-size: 18px;
+        font-size: 24px; /* Increased font size */
         color: #333;
     }
     .button-custom {
         display: inline-block;
         padding: 12px 24px;
-        font-size: 16px;
+        font-size: 18px; /* Slightly larger font for buttons */
         font-weight: bold;
         color: white;
         background-color: #007bff;
