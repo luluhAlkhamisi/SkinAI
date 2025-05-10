@@ -4,6 +4,8 @@ import tensorflow as tf
 import cv2
 from PIL import Image
 import keras
+import requests
+
 
 
 # Setup
@@ -19,15 +21,17 @@ class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 # model = load_model()
 @st.cache_resource
 def load_model_from_url(url):
+# Download model file
     response = requests.get(url)
-    print("hvjbkn",response.content)
+    response.raise_for_status()  # Ensure the request succeeded
+
+    # Save to a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix=".keras") as tmp_file:
         tmp_file.write(response.content)
-        print("tmp file",tmp_file)
-        tmp_path = tmp_file.name
-        print("paaaaaaaaaaaaaaaath ", tmp_path)
+        tmp_model_path = tmp_file.name
 
-    model = keras.models.load_model(tmp_path)
+    # Load model
+    model = keras.models.load_model(tmp_model_path)
     return model
 
 
