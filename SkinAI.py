@@ -4,8 +4,7 @@ import tensorflow as tf
 import cv2
 from PIL import Image
 import keras
-import requests
-import tempfile
+import gdown
 
 
 
@@ -21,23 +20,18 @@ class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 
 # model = load_model()
 @st.cache_resource
-def load_model_from_url(url):
-# Download model file
-    response = requests.get(url)
-    response.raise_for_status()  # Ensure the request succeeded
+import gdown
 
-    # Save to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".keras") as tmp_file:
-        tmp_file.write(response.content)
-        tmp_model_path = tmp_file.name
+@st.cache_resource
+def load_model_from_drive(drive_url):
+    # Download file using gdown
+    output = tempfile.NamedTemporaryFile(delete=False, suffix=".keras").name
+    gdown.download(drive_url, output, quiet=False)
+    return keras.models.load_model(output)
 
-    # Load model
-    model = keras.models.load_model(tmp_model_path)
-    return model
-
-
-model_url = "https://drive.google.com/uc?export=download&id=1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"
-model = load_model_from_url(model_url)
+# Direct gdown link
+model_url = "https://drive.google.com/uc?id=1pRUGLcLattWs4MI2U9YFq8ltbbSF7p1_"  # note: no 'export=download'
+model = load_model_from_drive(model_url)
 
 
 css = f"""
