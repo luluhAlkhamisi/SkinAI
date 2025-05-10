@@ -10,8 +10,6 @@ import tempfile
 
 # Setup
 st.set_page_config(page_title="SkinAI", layout="wide")
-
-# Class names
 class_names = ["chickenpox", "hfmd", "measles", "unknown"]
 
 # Load model from Google Drive
@@ -32,16 +30,16 @@ finally:
     except OSError as e:
         print(f"Error removing temporary file: {e}")
 
-# Custom CSS styling
-css = f"""
+# Custom CSS
+css = """
     <style>
-    .stApp {{
+    .stApp {
         background-image: url("https://i0.wp.com/post.healthline.com/wp-content/uploads/2022/04/hand-foot-and-mouth-disease-body8.jpg?w=1155&h=1528");
         background-size: cover;
         background-position: center;
         font-family: 'Arial', sans-serif;
-    }}
-    .custom-box {{
+    }
+    .custom-box {
         background-color: #FFFFFF;
         border-radius: 30px;
         padding: 40px;
@@ -49,8 +47,18 @@ css = f"""
         margin: auto;
         box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
         text-align: center;
-    }}
-    .TAKE-PICTURE {{
+    }
+    .title {
+        color: black;
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+    .subtitle {
+        font-size: 18px;
+        color: #0D0D1C;
+    }
+    .custom-button {
         background-color: white;
         color: #0D0D1C;
         border-radius: 20px;
@@ -59,29 +67,14 @@ css = f"""
         font-weight: bold;
         border: none;
         box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-        margin: 10px;
-    }}
-    .title {{
-        color: black;
-        font-size: 36px;
-        font-weight: 800;
-        margin-bottom: 20px;
-    }}
-    .subtitle {{
-        font-size: 18px;
-        color: #0D0D1C;
-    }}
-    .logo {{
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        max-height: 60px;
-    }}
+        margin-top: 10px;
+        width: 100%;
+    }
     </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
-# Header
+# Title and description
 st.markdown("""
     <div style="position: absolute; top: -75px; left: -50px; color: white;">
         <h1 style="color: black;"><strong>Skin<span style='color:#4F9CDA'>AI</span></strong></h1>
@@ -89,36 +82,37 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Central title box
 st.markdown("""
     <div class="custom-box">
         <div class="title">CHECK SKIN</div>
     </div>
 """, unsafe_allow_html=True)
 
-# State to control camera visibility
-if 'show_camera' not in st.session_state:
+# Camera control
+if "show_camera" not in st.session_state:
     st.session_state.show_camera = False
 
-# Take Picture button
 col1, col2 = st.columns([1, 1])
-with col1:
-    if not st.session_state.show_camera:
-        if st.button("📷 Take Picture", key="take_pic_btn"):
-            st.session_state.show_camera = True
-with col2:
-    uploaded_file = st.file_uploader("Or upload a skin image", type=["jpg", "jpeg", "png"])
 
-# Show camera input only after clicking the button
+with col1:
+    take_button = st.button("📷 Take Picture", key="take_picture")
+    st.markdown('<style>div.row-widget.stButton > button {width: 100%;}</style>', unsafe_allow_html=True)
+    if take_button:
+        st.session_state.show_camera = True
+
+with col2:
+    uploaded_file = st.file_uploader("Upload Picture", type=["jpg", "jpeg", "png"])
+
+# Show camera only after button click
 image_data = None
 if st.session_state.show_camera:
-    image_data = st.camera_input("Take a picture")
+    image_data = st.camera_input("")
 
 # Use uploaded image if available
 if uploaded_file:
     image_data = uploaded_file
 
-# Prediction & Result
+# Prediction and display
 if image_data is not None:
     img = Image.open(image_data).convert("RGB")
     img_resized = img.resize((224, 224))
@@ -129,7 +123,6 @@ if image_data is not None:
     predicted_class = class_names[np.argmax(predictions)]
     confidence = float(np.max(predictions)) * 100
 
-    # Show image and result
     img_display = img.resize((300, 300))
     st.image(img_display, use_column_width=False)
     st.markdown(f"""
