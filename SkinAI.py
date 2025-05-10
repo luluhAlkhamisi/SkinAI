@@ -39,15 +39,7 @@ st.markdown("""
         background-position: center;
         font-family: 'Segoe UI', sans-serif;
     }
-    .centered-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 40px;
-        border-radius: 25px;
-        box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-        text-align: center;
-        max-width: 600px;
-        margin: 60px auto;
-    }
+ 
     .title {
         font-size: 48px; /* Increased font size */
         font-weight: 800;
