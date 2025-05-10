@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import tensorflow as tf
-import cv2
 from PIL import Image
 import keras
 import gdown
@@ -68,40 +67,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
-        .custom-box {
-            background-color: #f2f2f2;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .custom-box .title {
-            font-size: 25px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .custom-box button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .custom-box button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-    <div class="custom-box">
-        <div class="title">CHECK SKIN</div>
-    </div>
-""", unsafe_allow_html=True)
-
 # Title and subtitle
 st.markdown("<div class='centered-container'>", unsafe_allow_html=True)
 st.markdown("<div class='title'>Skin<span style='color:#4F9CDA'>AI</span></div>", unsafe_allow_html=True)
@@ -114,12 +79,16 @@ image_data = None
 if option == "📤 Upload Image":
     image_data = st.file_uploader("Upload a skin image", type=["jpg", "jpeg", "png"])
 elif option == "📷 Take Picture":
-    if st.button("Take Picture", key="take_picture", help="Click to activate your camera"):
-        image_data = st.camera_input("Capture Skin Area")
+    image_data = st.camera_input("Capture Skin Area")
 
 # Process and Predict
 if image_data:
-    img = Image.open(image_data).convert("RGB")
+    # Check if the image is from camera or file upload
+    if isinstance(image_data, bytes):
+        img = Image.open(image_data).convert("RGB")
+    else:
+        img = Image.open(image_data).convert("RGB")
+
     img_resized = img.resize((224, 224))
     img_array = np.array(img_resized) / 255.0
     img_input = np.expand_dims(img_array, axis=0)
