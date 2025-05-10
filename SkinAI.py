@@ -181,8 +181,8 @@ if image_data is not None:
 
     # Show result screen
     #Image.open(image_data)
-    img_resized2 = img.resize((100, 100))
-    st.image( img_resized2  , use_column_width=False)
+    #img_resized2 = img.resize((100, 100))
+    st.image( img_resized  , use_column_width=False)
     st.markdown(f"""
         <div style='background-color:#FFFFFF;padding:25px;border-radius:15px;text-align:center'>
             <h2 style='color:#FF4444;'>Disease: {predicted_class.upper()}</h2>
