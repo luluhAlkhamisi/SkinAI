@@ -189,4 +189,11 @@ if image_data is not None:
             <p style='font-size:25px; color: black;'>Confidence: {confidence:.2f}%</p>
 
         </div>
+        st.markdown("""
+    <style>
+    [data-testid="stCameraInput"] video {
+        max-height: 300px;
+        object-fit: contain;
+    }
+    </style>
     """, unsafe_allow_html=True)
