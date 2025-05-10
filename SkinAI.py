@@ -66,7 +66,7 @@ css = f"""
         background-color: #FFFFFF;
         border-radius: 30px;
         padding: 40px;
-        max-width: 50px;
+        max-width: 500px;
         margin: auto;
         box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
         text-align: center;
@@ -191,3 +191,13 @@ if image_data is not None:
         </div>
  
     """, unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+    [data-testid="stCameraInput"] video {
+        max-height: 300px;
+        object-fit: contain;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
