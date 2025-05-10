@@ -55,7 +55,7 @@ finally:
 css = f"""
     <style>
     .stApp {{
-        background-image: url("https://as2.ftcdn.net/jpg/01/17/12/37/1000_F_117123796_MBKR6xeMfrBdfhSWNWtjTddwUci1F2HR.jpg");
+        background-image: url("https://i0.wp.com/post.healthline.com/wp-content/uploads/2022/04/hand-foot-and-mouth-disease-body8.jpg?w=1155&h=1528");
         background-size: cover;
         background-position: center;
         font-family: 'Arial', sans-serif;
